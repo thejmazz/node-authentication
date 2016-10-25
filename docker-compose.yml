@@ -2,11 +2,13 @@ version: '2'
 services:
   api:
     image: node:6
-    working_dir: /usr/scr/app
+    working_dir: /usr/src/app
+    environment:
+      - NODE_PATH=/usr/src/app
     ports:
       - "$API_PORT:$API_PORT"
     volumes:
-      - .:/usr/scr/app
+      - .:/usr/src/app
     links:
       - postgres:$PGHOST
     command: ./node_modules/.bin/nodemon server.js

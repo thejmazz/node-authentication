@@ -2,9 +2,9 @@
 
 const express = require('express')
 
-const config = require('./lib/config.js')
-const { global: globalMiddlewares } = require('./lib/middlewares.js')
-const { db, verifyDBConnection } = require('./lib/db.js')(config)
+const { PORT } = require('lib/config.js')
+const globalMiddlewares = require('lib/global-middlewares.js')
+const { db, verifyDBConnection } = require('lib/db.js')
 
 // Initialize application
 const app = express()
@@ -23,8 +23,8 @@ const requiredServices = [
 // Listen once everything ready
 Promise.all(requiredServices)
   .then(() => {
-    app.listen(config.PORT)
-    console.log(`App listening on ${config.PORT}`)
+    app.listen(PORT)
+    console.log(`App listening on ${PORT}`)
   })
   .catch((err) => {
     console.log('ERROR: ', err)
