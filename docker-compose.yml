@@ -1,0 +1,34 @@
+version: '2'
+services:
+  api:
+    image: node:6
+    working_dir: /usr/scr/app
+    ports:
+      - "$API_PORT:$API_PORT"
+    volumes:
+      - .:/usr/scr/app
+    links:
+      - postgres:$PGHOST
+    command: ./node_modules/.bin/nodemon server.js
+  postgres:
+    image: sameersbn/postgresql:9.5-3
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=false
+
+      - DB_USER=$PGUSER
+      - DB_PASS=$PGPASSWORD
+      - DB_NAME=$PGDATABASE
+      - DB_TEMPLATE=
+
+      - DB_UNACCENT=
+
+      - REPLICATION_MODE=
+      - REPLICATION_USER=
+      - REPLICATION_PASS=
+      - REPLICATION_SSLMODE=
+    volumes:
+      - data:/var/lib/postgresql
+volumes:
+  data: {}

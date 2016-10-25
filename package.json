@@ -1,0 +1,33 @@
+{
+  "name": "node-authorization",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thejmazz/node-authorization.git"
+  },
+  "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thejmazz/node-authorization/issues"
+  },
+  "homepage": "https://github.com/thejmazz/node-authorization#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
+    "retry": "^0.10.0",
+    "sequelize": "^3.24.6"
+  }
+}
