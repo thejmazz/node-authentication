@@ -4,7 +4,8 @@ const express = require('express')
 
 const { PORT } = require('lib/config.js')
 const globalMiddlewares = require('lib/global-middlewares.js')
-const { db, verifyDBConnection } = require('lib/db.js')
+const db = require('lib/db.js')
+const initializeDb = require('lib/initialize-db.js')
 
 // Initialize application
 const app = express()
@@ -15,13 +16,10 @@ globalMiddlewares.map(mw => app.use(mw))
 // Apply routes
 app.get('/', (req, res) => res.send('Hello world\n'))
 
-// Verified required services are functional
-const requiredServices = [
-  verifyDBConnection(db)
-]
-
 // Listen once everything ready
-Promise.all(requiredServices)
+Promise.all([
+  initializeDb()
+])
   .then(() => {
     app.listen(PORT)
     console.log(`App listening on ${PORT}`)
