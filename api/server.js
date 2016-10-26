@@ -28,17 +28,18 @@ app.post('/signup', (req, res) => {
   const { email, password } = req.body
 
   // Check no user with same email already exists
-  Users.findOne({
-    where: {
-      email
-    }
-  }).then((user) => {
-      if (user) {
-        res.status(409)
-        res.send({ success: false, message: 'User account already exists' })
-        throw new Error('user account already exists')
-      }
-    })
+  // Users.findOne({
+  //   where: {
+  //     email
+  //   }
+  // }).then((user) => {
+  //     if (user) {
+  //       res.send({ success: false, message: 'User account already exists' })
+  //       throw new Error('user account already exists')
+  //     }
+  //   })
+
+  Promise.resolve()
     .then(() => bcrypt.genSalt(10))
     .then(salt => bcrypt.hash(password, salt))
     .then(hash => Users.create({ email, password: hash }))
@@ -48,6 +49,16 @@ app.post('/signup', (req, res) => {
     }))
     .catch(err => {
       if (err.message === 'user account already exists') {
+        return
+      }
+
+      if (err.name === 'SequelizeValidationError') {
+        if (err.message === 'Validation error: Validation isEmail failed') {
+          res.send({ success: false, message: 'Email validation failed' })
+          return
+        }
+      } else if (err.name === 'SequelizeUniqueConstraintError') {
+        res.send({ success: false, message: 'Email already exists' })
         return
       }
 
