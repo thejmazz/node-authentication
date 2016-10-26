@@ -8,6 +8,7 @@ const Users = db.define('users', {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,
+    // see: http://docs.sequelizejs.com/en/2.0/docs/models-definition/#validations
     validate: {
       isEmail: true
     }

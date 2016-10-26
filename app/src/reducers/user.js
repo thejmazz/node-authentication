@@ -41,3 +41,19 @@ export const signup = ({ email, password }) => (dispatch) => {
       console.error(err)
     })
 }
+
+export const login = ({ email, password }) => (dispatch) => {
+  postJSON('/login', { email, password })
+    .then((res) => {
+      if (res.success === true) {
+        dispatch({
+          type: LOGIN,
+          username: email
+        })
+      } else {
+        console.log('Not successful')
+        console.log(res)
+      }
+    })
+    .catch(err => console.error(err))
+}

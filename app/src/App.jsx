@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 // === Global CSS ===
 import 'flexboxgrid/dist/flexboxgrid.css'
@@ -6,7 +7,7 @@ import 'flexboxgrid/dist/flexboxgrid.css'
 // === Components ===
 import Form from 'components/Form.jsx'
 
-import { signup } from 'reducers/user.js'
+import { signup, login } from 'reducers/user.js'
 
 const formFields = [{
   name: 'email',
@@ -15,18 +16,26 @@ const formFields = [{
 }, {
   name: 'password',
   component: 'input',
-  type: 'text'
+  type: 'password'
 }]
 
 import { store } from './app.js'
 
 const onSubmit = (values) => store.dispatch(signup(values))
 
-const App = () => (
+const mapStateToProps = ({ user }) => ({ user })
+
+const App = ({ user, dispatch }) => (
   <div>
-    hello world
-    <Form onSubmit={onSubmit} fields={formFields}/>
+    {user.isLoggedIn
+      ? <h1>Welcome {user.username}</h1>
+      : <h1>Not logged in</h1>
+    }
+    <h2>Signup</h2>
+    <Form form="signup" onSubmit={onSubmit} fields={formFields}/>
+    <h2>Login</h2>
+    <Form form="login" fields={formFields} onSubmit={(values) => dispatch(login(values))}/>
   </div>
 )
 
-export default App
+export default connect(mapStateToProps)(App)

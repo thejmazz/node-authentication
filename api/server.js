@@ -16,6 +16,43 @@ globalMiddlewares.map(mw => app.use(mw))
 // Apply routes
 app.get('/', (req, res) => res.send('Hello world\n'))
 
+app.post('/login', (req, res) => {
+  const { Users } = require('models/index.js')
+  const bcrypt = {
+    compare: require('bluebird').promisify(require('bcryptjs').compare)
+  }
+
+  const { email, password } = req.body
+
+  Users.findOne({
+    where: {
+      email
+    }
+  }).then((user) => {
+    if (user) {
+      console.log(user)
+      return bcrypt.compare(password, user.dataValues.password)
+      // res.send({ success: false, message: 'WIP' })
+    } else {
+      throw new Error('no user')
+    }
+  }).then((matched) => {
+    if (matched) {
+      res.send({ success: true, message: 'Logged in' })
+    } else {
+      res.send({ success: false, message: 'Login failed' })
+    }
+  })
+    .catch((err) => {
+    if (err.message === 'no user') {
+      res.send({ success: false, message: 'Login fail' })
+    } else {
+      console.error(err)
+      res.status(500)
+    }
+  })
+})
+
 app.post('/signup', (req, res) => {
   const Promise = require('bluebird')
   const bcryptjs = require('bcryptjs')

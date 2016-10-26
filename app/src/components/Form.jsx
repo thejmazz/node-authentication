@@ -27,4 +27,4 @@ const Form = ({ handleSubmit, fields }) => (
   </form>
 )
 
-export default reduxForm({ form: 'signup' })(Form)
+export default reduxForm()(Form)
