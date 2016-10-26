@@ -27,7 +27,19 @@ app.post('/signup', (req, res) => {
 
   const { email, password } = req.body
 
-  bcrypt.genSalt(10)
+  // Check no user with same email already exists
+  Users.findOne({
+    where: {
+      email
+    }
+  }).then((user) => {
+      if (user) {
+        res.status(409)
+        res.send({ success: false, message: 'User account already exists' })
+        throw new Error('user account already exists')
+      }
+    })
+    .then(() => bcrypt.genSalt(10))
     .then(salt => bcrypt.hash(password, salt))
     .then(hash => Users.create({ email, password: hash }))
     .then(() => res.send({
@@ -35,6 +47,13 @@ app.post('/signup', (req, res) => {
       message: `User account ${email} created`
     }))
     .catch(err => {
+      if (err.message === 'user account already exists') {
+        return
+      }
+
+      throw err
+    })
+    .catch((err) => {
       console.error(err)
       res.status(500)
     })

@@ -31,7 +31,13 @@ export const signup = ({ email, password }) => (dispatch) => {
           type: SIGNUP,
           username: email
         })
+      } else {
+        console.log('Didnt get success')
+        console.log(res)
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      console.log('Error:')
+      console.error(err)
+    })
 }
